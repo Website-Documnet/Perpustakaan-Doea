@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bibliotek Doea - Perpustakaan Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Login Screen (First Page) -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-container">
+            <div class="login-logo">📖</div>
+            <h1 class="login-title serif">Bibliotek Doea</h1>
+            <p class="login-subtitle">Perpustakaan Digital Terintegrasi</p>
+            
+            <form id="loginScreenForm" onsubmit="handleLoginScreen(event)" class="login-form">
+                <div class="form-group">
+                    <input type="text" id="loginNameScreen" class="form-input" placeholder="Nama Lengkap" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="loginKelasScreen" class="form-input" placeholder="Kelas (Contoh: XI IPA 1)" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="loginSekolahScreen" class="form-input" placeholder="Nama Sekolah" required>
+                </div>
+                <button type="submit" class="btn-primary-lg w-full">Masuk</button>
+            </form>
+            
+            <p class="login-note">Masukkan data diri Anda untuk mengakses platform</p>
+        </div>
+    </div>
+
+    <!-- Main Platform (Hidden until logged in) -->
+    <div id="mainPlatform" class="hidden">
+
+    <nav class="navbar">
+        <div class="logo">
+            <div class="logo-icon">📖</div>
+            <span class="serif text-xl font-bold">Bibliotek Doea</span>
+        </div>
+        <div class="nav-links">
+            <a href="#" class="nav-item" onclick="showSection('beranda')">Beranda</a>
+            <a href="#" class="nav-item active" onclick="showSection('katalog')">Katalog</a>
+            <a href="#" class="nav-item" onclick="showSection('tentang')">Tentang</a>
+            <a href="#" class="nav-item" onclick="showSection('kontak')">Kontak</a>
+        </div>
+        <button id="navMasukBtn" class="btn-primary" onclick="openLoginModal()">Masuk</button>
+    </nav>
+
+    <!-- Section: Beranda -->
+    <section id="beranda" class="section-page">
+        <header class="hero">
+            <h1 class="hero-title serif">Platform <br>Perpustakaan Digital <br>Terintegrasi.</h1>
+            <p class="hero-subtitle">Temukan ribuan koleksi buku digital, mulai dari sastra klasik hingga sains modern. Akses pengetahuan kapan saja dan di mana saja.</p>
+            <div class="flex gap-4">
+                <button class="btn-primary-lg" onclick="showSection('katalog')">Mulai Membaca <span>→</span></button>
+                <button class="btn-outline-lg" onclick="showSection('tentang')">Pelajari Lebih Lanjut</button>
+            </div>
+        </header>
+    </section>
+
+    <!-- Section: Tentang -->
+    <section id="tentang" class="section-page hidden">
+        <div class="about-section">
+            <h2 class="text-4xl mb-4 serif">Tentang Bibliotek Doea</h2>
+            <p class="text-gray-600 text-lg mb-4">Bibliotek Doea adalah platform perpustakaan digital yang dirancang untuk memberikan akses mudah terhadap koleksi buku berkualitas bagi siswa dan guru. Kami percaya bahwa literasi adalah kunci untuk membangun masa depan yang lebih baik.</p>
+            <p class="text-gray-600 text-lg">Didirikan pada tahun 2026, kami terus berkembang untuk menyediakan akses gratis ke sumber daya pendidikan berkualitas.</p>
+        </div>
+    </section>
+
+    <!-- Section: Kontak -->
+    <section id="kontak" class="section-page hidden">
+        <div class="contact-section">
+            <h2 class="text-4xl mb-4 serif">Hubungi Kami</h2>
+            <div class="contact-info">
+                <p class="text-gray-600 text-lg mb-2"><strong>Alamat:</strong> Jl. Panglima Sudirman No.163, Kebonagung, Kec. Purworejo, Kota Pasuruan, Jawa Timur 67116</p>
+                <p class="text-gray-600 text-lg mb-2"><strong>Email:</strong> Email @bibliotekdoea.com</p>
+                <p class="text-gray-600 text-lg mb-2"><strong>Telepon:</strong> +62 851 2345 6789</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Katalog -->
+    <section id="katalog" class="section-page">
+        <div class="catalog-section">
+            <div class="catalog-header">
+                <div>
+                    <h2 class="text-4xl mb-2 serif">Katalog Buku</h2>
+                    <p class="text-gray-500">Cari dan temukan buku favoritmu dari koleksi kami.</p>
+                </div>
+<div class="catalog-controls">
+                    <div class="search-wrapper">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="searchInput" placeholder="Cari judul atau penulis..." class="search-bar">
+                        <button type="button" id="clearSearchBtn" class="clear-btn hidden">✕</button>
+                    </div>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-category="semua">Semua</button>
+                        <button class="filter-btn" data-category="Non-Fiksi">Non-Fiksi</button>
+                        <button class="filter-btn" data-category="Fiksi Sastra">Fiksi Sastra</button>
+                        <button class="filter-btn" data-category="Novel Fiksi">Novel Fiksi</button>
+                        <button class="filter-btn" data-category="Sekolah" onclick="openSekolahModal()">Sekolah</button>
+                        <button class="filter-btn kelola-btn" onclick="openKelolaModal()">Kelola</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="book-grid" id="bookGrid">
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-info">
+                <div class="logo mb-6">
+                    <div class="logo-icon-sm">📖</div>
+                    <span class="serif text-white text-xl font-bold">Bibliotek Doea</span>
+                </div>
+                <p class="footer-text">Membangun masa depan melalui literasi digital. Kami menyediakan akses gratis ke sumber daya pendidikan berkualitas untuk seluruh siswa dan guru.</p>
+            </div>
+            <div class="footer-links">
+                <h4 class="footer-heading">Tautan Cepat</h4>
+                <ul>
+                    <li><a href="#" onclick="showSection('beranda'); return false;">Beranda</a></li>
+                    <li><a href="#" onclick="showSection('katalog'); return false;">Katalog Buku</a></li>
+                    <li><a href="#" onclick="openPanduanModal(); return false;">Panduan Pengguna</a></li>
+                    <li><a href="#" onclick="openPrivasiModal(); return false;">Kebijakan Privasi</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4 class="footer-heading">Kontak</h4>
+                <ul>
+                    <li>Jl. Panglima Sudirman No.163, Kebonagung, Kec. Purworejo, Kota Pasuruan, Jawa Timur 67116</li>
+                    <li>Email @bibliotekdoea.com</li>
+                    <li>+62 851 2345 6789</li>
+                </ul>
+            </div>
+        </div>
+        <p class="copyright">NO COPYRIGHT © 2026 BIBLIOTEK DOEA. ALL RIGHTS RESERVED.</p>
+    </footer>
+
+<!-- Modal Kelola Buku -->
+    <div id="kelolaModal" class="modal-overlay hidden">
+        <div class="modal-card kelola-modal">
+            <button onclick="closeKelolaModal()" class="close-btn">✕</button>
+            <h2 class="modal-title serif text-center">Kelola Buku</h2>
+            <p class="text-gray-500 text-center mb-6">Tambah buku baru ke katalog</p>
+            <form id="kelolaForm" onsubmit="handleAddBook(event)">
+                <div class="form-group">
+                    <label class="form-label">Judul Buku</label>
+                    <input type="text" id="bookTitle" class="form-input" placeholder="Masukkan judul buku" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Penulis</label>
+                    <input type="text" id="bookAuthor" class="form-input" placeholder="Masukkan nama penulis" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Kategori</label>
+                    <select id="bookCategory" class="form-input" required>
+                        <option value="">Pilih kategori</option>
+                        <option value="fiksi">Fiksi</option>
+                        <option value="sains">Sains</option>
+                        <option value="sastra">Sastra</option>
+                        <option value="Non-fiksi">Non-Fiksi</option>
+                        <option value="Novel Fiksi">Novel Fiksi</option>
+                        <option value="Fiksi Sastra">Fiksi Sastra</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Tahun</label>
+                    <input type="number" id="bookYear" class="form-input" placeholder="Contoh: 2024" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">URL Cover Buku</label>
+                    <input type="url" id="bookCover" class="form-input" placeholder="https://contoh.com/cover.jpg">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">URL Baca Online (PDF)</label>
+                    <input type="url" id="bookReadUrl" class="form-input" placeholder="https://contoh.com/buku.pdf">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">URL Unduh PDF</label>
+                    <input type="url" id="bookPdfUrl" class="form-input" placeholder="https://contoh.com/buku.pdf">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Sinopsis</label>
+                    <textarea id="bookDesc" class="form-input" rows="3" placeholder="Masukkan sinopsis buku"></textarea>
+                </div>
+                <button type="submit" class="btn-primary w-full">Tambah Buku</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Detail Buku (yang sudah ada) -->
+    <div id="bookModal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <button id="closeModal" class="close-btn">✕</button>
+            <div class="modal-image-container">
+                <img id="modalImg" src="" alt="Cover Buku">
+            </div>
+            <div class="modal-details">
+                <span id="modalTag" class="tag-badge">KATEGORI • TAHUN</span>
+                <h2 id="modalTitle" class="modal-title serif">Judul Buku</h2>
+                <p id="modalAuthor" class="modal-author">oleh Penulis</p>
+                <h4 class="section-label">Sinopsis</h4>
+                <p id="modalDesc" class="modal-description">Deskripsi...</p>
+                <div class="modal-actions">
+                    <button class="btn-primary-md">📖 Baca Online</button>
+                    <button class="btn-outline-md">↓ Unduh PDF</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Sekolah - Pilih Kelas -->
+    <div id="sekolahModal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <button onclick="closeSekolahModal()" class="close-btn">✕</button>
+            <h2 class="modal-title serif text-center">Buku Sekolah</h2>
+            <p class="text-gray-500 text-center mb-6">Pilih kelas untuk melihat buku</p>
+            
+            <div class="kelas-grid">
+                <div class="kelas-card" onclick="showKelasBooks('X')">
+                    <span class="kelas-icon">📚</span>
+                    <span class="kelas-title">Kelas X</span>
+                    <span class="kelas-subtitle">SMA/SMK</span>
+                </div>
+                <div class="kelas-card" onclick="showKelasBooks('XI')">
+                    <span class="kelas-icon">📖</span>
+                    <span class="kelas-title">Kelas XI</span>
+                    <span class="kelas-subtitle">SMA/SMK</span>
+                </div>
+                <div class="kelas-card" onclick="showKelasBooks('XII')">
+                    <span class="kelas-icon">🎓</span>
+                    <span class="kelas-title">Kelas XII</span>
+                    <span class="kelas-subtitle">SMA/SMK</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Daftar Buku per Kelas -->
+    <div id="kelasBooksModal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <button onclick="closeKelasBooksModal()" class="close-btn">✕</button>
+            <h2 id="kelasTitle" class="modal-title serif text-center">Buku Kelas X</h2>
+            <p class="text-gray-500 text-center mb-6">Pilih buku untuk membaca atau mengunduh</p>
+            <div id="kelasBooksList" class="kelas-books-list">
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Panduan Pengguna -->
+    <div id="panduanModal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <button onclick="closePanduanModal()" class="close-btn">✕</button>
+            <h2 class="modal-title serif text-center">Panduan Pengguna</h2>
+            <div class="modal-description text-left">
+                <h4 class="font-bold mb-2">Cara Menggunakan Bibliotek Doea:</h4>
+                <ol class="list-decimal list-inside text-gray-600 space-y-2 mb-4">
+                    <li>Masuk ke platform dengan nama Pengguna data diri Anda (Nama, Kelas, Sekolah)</li>
+                    <li>Setelah Masuk, Anda akan melihat halaman Beranda</li>
+                    <li>Klik menu <strong>Katalog</strong> untuk melihat koleksi buku</li>
+                    <li>Gunakan fitur <strong>Cari</strong> untuk menemukan buku tertentu</li>
+                    <li>Gunakan <strong>Filter</strong> untuk melihat buku berdasarkan kategori</li>
+                    <li>Klik <strong>Buku Sekolah</strong> untuk melihat buku pelajaran per kelas</li>
+                    <li>Klik pada buku untuk melihat detail dan membaca/mengunduh</li>
+                </ol>
+                <h4 class="font-bold mb-2">Fitur Utama:</h4>
+                <ul class="list-disc list-inside text-gray-600 space-y-1">
+                    <li><strong>Katalog Buku</strong> - Koleksi buku sastra dan fiksi</li>
+                    <li><strong>Buku Sekolah</strong> - Buku pelajaran untuk kelas X, XI, XII</li>
+                    <li><strong>Baca Online</strong> - Membaca buku langsung di browser</li>
+                    <li><strong>Unduh PDF</strong> - Mengunduh buku dalam format PDF</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Kebijakan Privasi -->
+    <div id="privasiModal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <button onclick="closePrivasiModal()" class="close-btn">✕</button>
+            <h2 class="modal-title serif text-center">Kebijakan Privasi</h2>
+            <div class="modal-description text-left">
+                <h4 class="font-bold mb-2">Kebijakan Privasi Bibliotek Doea</h4>
+                <p class="text-gray-600 text-sm mb-4">Terakhir diperbarui: 1999</p>
+                
+                <h4 class="font-bold mb-2">1. Pengumpulan Data</h4>
+                <p class="text-gray-600 text-sm mb-3">Kami mengumpulkan data pribadi Anda (Nama, Kelas, Sekolah) hanya untuk tujuan akses ke platform dan tidak dibagikan kepada pihak kedua ataupun ketiga.</p>
+                
+                <h4 class="font-bold mb-2">2. Penggunaan Data</h4>
+                <p class="text-gray-600 text-sm mb-3">Data yang Anda berikan digunakan untuk:</p>
+                <ul class="list-disc list-inside text-gray-600 text-sm mb-3 ml-2">
+                    <li>Verifikasi akses pengguna</li>
+                    <li>Statistik pengunjung</li>
+                    <li>Peningkatan layanan</li>
+                </ul>
+                
+                <h4 class="font-bold mb-2">3. Keamanan</h4>
+                <p class="text-gray-600 text-sm mb-3">Kami berkomitmen untuk menjaga keamanan data dan privasi Anda.</p>
+                
+                <h4 class="font dengan standar-bold mb-2">4. Perubahan Kebijakan</h4>
+                <p class="text-gray-600 text-sm">Kebijakan privasi ini dapat berubah sewaktu-waktu tanpa pemberitahuan sebelumnya.</p>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
